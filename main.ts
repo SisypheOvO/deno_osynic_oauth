@@ -8,16 +8,26 @@ try {
 } catch (error) {
   // 在部署环境中可能没有 .env 文件，这是正常的
   const errMsg = error instanceof Error ? error.message : String(error);
-  console.error("⚠️ .env file not found, proceeding with environment variables:", errMsg);
+  console.error(
+    "⚠️ .env file not found, proceeding with environment variables:",
+    errMsg,
+  );
   console.log("ℹ️ .env file not found, using environment variables instead");
 }
 
 // 配置信息
 const config = {
   clientId: env.OSU_CLIENT_ID || Deno.env.get("OSU_CLIENT_ID") || "1",
-  clientSecret: env.OSU_CLIENT_SECRET || Deno.env.get("OSU_CLIENT_SECRET") || "clientsecret",
-  redirectUri: env.REDIRECT_URI || Deno.env.get("REDIRECT_URI") || "http://localhost:4000/callback",
-  webappUrl: env.WEBAPP_URL || Deno.env.get("WEBAPP_URL") || "http://localhost:3000",
+  clientSecret:
+    env.OSU_CLIENT_SECRET ||
+    Deno.env.get("OSU_CLIENT_SECRET") ||
+    "clientsecret",
+  redirectUri:
+    env.REDIRECT_URI ||
+    Deno.env.get("REDIRECT_URI") ||
+    "http://localhost:4000/callback",
+  webappUrl:
+    env.WEBAPP_URL || Deno.env.get("WEBAPP_URL") || "http://localhost:3000",
   port: Number.parseInt(env.PORT || Deno.env.get("PORT") || "4000"),
 };
 
@@ -60,158 +70,115 @@ async function handler(req: Request): Promise<Response> {
           }
           
           body {
-            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0f1e3d 100%);
-            background-attachment: fixed;
-            color: #e0e6ff;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: #1a1a2e;
+            color: #f0f0f0;
             min-height: 100vh;
             position: relative;
-            overflow-x: hidden;
-          }
-          
-          /* 背景网格效果 */
-          body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-              linear-gradient(0deg, transparent 24%, rgba(0, 255, 200, 0.05) 25%, rgba(0, 255, 200, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 200, 0.05) 75%, rgba(0, 255, 200, 0.05) 76%, transparent 77%, transparent),
-              linear-gradient(90deg, transparent 24%, rgba(0, 255, 200, 0.05) 25%, rgba(0, 255, 200, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 200, 0.05) 75%, rgba(0, 255, 200, 0.05) 76%, transparent 77%, transparent);
-            background-size: 50px 50px;
-            pointer-events: none;
-            z-index: -2;
-          }
-          
-          /* 装饰光线 */
-          body::after {
-            content: '';
-            position: fixed;
-            top: -50%;
-            right: -20%;
-            width: 100%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 255, 200, 0.08) 0%, transparent 70%);
-            pointer-events: none;
-            z-index: -1;
           }
           
           .container {
             max-width: 900px;
             margin: 40px auto;
-            padding: 40px;
-            background: rgba(15, 30, 61, 0.6);
-            border: 1px solid rgba(0, 255, 200, 0.2);
-            border-left: 3px solid rgba(0, 255, 200, 0.6);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
+            padding: 45px;
+            background: #16213e;
+            border: 1px solid rgba(255, 105, 180, 0.4);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+          }
+          
+          .title-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+          }
+          
+          .logo-circle {
+            width: 50px;
+            height: 50px;
+            background: #ff69b4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+            color: white;
           }
           
           h1 {
             font-size: 2.5em;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #00ffc8 0%, #00a8ff 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            margin: 0;
+            color: #ff69b4;
             font-weight: 700;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: inline-block;
+            letter-spacing: 0.5px;
           }
           
           h1:hover {
-            filter: brightness(1.2);
-            transform: translateY(-2px);
-            text-shadow: 0 0 20px rgba(0, 255, 200, 0.4);
+            color: #ff1493;
           }
           
           .subtitle {
-            font-size: 1em;
-            color: #00ffc8;
-            margin-bottom: 30px;
-            opacity: 0.8;
-            border-bottom: 1px solid rgba(0, 255, 200, 0.2);
-            padding-bottom: 20px;
+            font-size: 0.95em;
+            color: #ff69b4;
+            margin-bottom: 25px;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255, 105, 180, 0.3);
+            padding-bottom: 15px;
           }
           
           p {
-            line-height: 1.8;
-            margin-bottom: 15px;
-            color: #c0c6ff;
-          }
-          
-          a {
-            color: #00ffc8;
-            text-decoration: none;
-            position: relative;
-            font-weight: 600;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          }
-          
-          a::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, #00ffc8 0%, #00a8ff 100%);
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.3s ease;
-          }
-          
-          a:hover {
-            color: #00a8ff;
-            text-shadow: 0 0 10px rgba(0, 255, 200, 0.5);
-          }
-          
-          a:hover::after {
-            transform: scaleX(1);
-            transform-origin: left;
-          }
-          
-          h3 {
-            font-size: 1.3em;
-            color: #00ffc8;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
-          }
-          
-          code {
-            background: rgba(0, 255, 200, 0.1);
-            color: #00ffc8;
-            padding: 4px 10px;
-            border: 1px solid rgba(0, 255, 200, 0.2);
-            font-family: 'Courier New', monospace;
-            font-size: 0.9em;
-            letter-spacing: 0.5px;
-          }
-          
-          .info {
-            background: rgba(0, 255, 200, 0.08);
-            border-left: 2px solid #00ffc8;
-            padding: 20px;
-            margin: 20px 0;
-            border-top: 1px solid rgba(0, 255, 200, 0.15);
-            border-bottom: 1px solid rgba(0, 255, 200, 0.15);
-          }
-          
-          .info p {
-            margin-bottom: 8px;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            color: #d0d0d0;
             font-size: 0.95em;
           }
           
-          .info strong {
-            color: #00ffc8;
+          a {
+            color: #ff69b4;
+            text-decoration: none;
             font-weight: 600;
+            transition: color 0.2s;
+          }
+          
+          a:hover {
+            color: #ff1493;
+            text-decoration: underline;
+          }
+          
+          h3 {
+            font-size: 1.2em;
+            color: #ff69b4;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+          }
+          
+          code {
+            background: rgba(255, 105, 180, 0.1);
+            color: #ff69b4;
+            padding: 4px 8px;
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            font-weight: 600;
+          }
+          
+          .config-box {
+            background: rgba(255, 105, 180, 0.08);
+            border: 1px solid rgba(255, 105, 180, 0.3);
+            padding: 20px;
+            margin: 20px 0;
+          }
+          
+          .config-box p {
+            margin-bottom: 8px;
+          }
+          
+          .config-box strong {
+            color: #ff69b4;
+            font-weight: 700;
           }
           
           ol, ul {
@@ -220,71 +187,64 @@ async function handler(req: Request): Promise<Response> {
           }
           
           li {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             line-height: 1.6;
-            color: #c0c6ff;
+            color: #d0d0d0;
           }
           
           .btn {
             display: inline-block;
-            padding: 14px 32px;
-            background: linear-gradient(135deg, #00ffc8 0%, #00a8ff 100%);
-            color: #0a0e27;
+            padding: 14px 40px;
+            background: #ff69b4;
+            color: white;
             text-decoration: none;
-            margin-top: 25px;
+            margin-top: 20px;
             font-weight: 700;
-            font-size: 1em;
+            font-size: 0.95em;
             letter-spacing: 0.5px;
             cursor: pointer;
             border: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 255, 200, 0.3);
+            transition: all 0.2s;
             text-transform: uppercase;
-            position: relative;
-            overflow: hidden;
-          }
-          
-          .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.2);
-            transition: left 0.3s ease;
-            z-index: -1;
           }
           
           .btn:hover {
-            box-shadow: 0 6px 25px rgba(0, 255, 200, 0.5);
+            background: #ff1493;
             transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.3);
           }
           
-          .btn:hover::before {
-            left: 100%;
+          .btn:active {
+            transform: translateY(0);
           }
           
-          .endpoint-list {
-            background: rgba(0, 255, 200, 0.05);
-            border: 1px solid rgba(0, 255, 200, 0.15);
+          .endpoint-box {
+            background: rgba(255, 105, 180, 0.06);
+            border: 1px solid rgba(255, 105, 180, 0.25);
             padding: 20px;
+            margin: 15px 0;
           }
           
           .endpoint-item {
             margin-bottom: 12px;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(0, 255, 200, 0.1);
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 105, 180, 0.1);
+            font-size: 0.95em;
           }
           
           .endpoint-item:last-child {
             border-bottom: none;
+            margin-bottom: 0;
           }
           
           .endpoint-item code {
-            background: rgba(0, 255, 200, 0.12);
-            padding: 6px 12px;
-            margin-right: 10px;
+            background: rgba(255, 105, 180, 0.15);
+            padding: 6px 10px;
+            margin-right: 8px;
+          }
+          
+          .endpoint-item span {
+            color: #b0b0c0;
           }
           
           .github-link {
@@ -298,69 +258,60 @@ async function handler(req: Request): Promise<Response> {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 12px 20px;
-            background: rgba(0, 255, 200, 0.08);
-            border: 1.5px solid rgba(0, 255, 200, 0.4);
-            border-radius: 8px;
-            color: #00ffc8;
+            padding: 11px 18px;
+            background: #16213e;
+            border: 1px solid rgba(255, 105, 180, 0.5);
+            color: #ff69b4;
             text-decoration: none;
             font-weight: 700;
-            font-size: 0.95em;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 0 20px rgba(0, 255, 200, 0.15),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
+            font-size: 0.85em;
+            transition: all 0.2s;
             text-transform: uppercase;
             letter-spacing: 0.5px;
           }
           
           .github-badge:hover {
-            background: rgba(0, 255, 200, 0.15);
-            box-shadow: 0 0 35px rgba(0, 255, 200, 0.35),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.15);
-            transform: translateY(-3px) scale(1.02);
-            border-color: rgba(0, 255, 200, 0.6);
-          }
-          
-          .github-badge:active {
-            transform: translateY(-1px) scale(0.98);
+            background: #1a2d4f;
+            border-color: #ff69b4;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
           }
           
           .github-icon {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             fill: currentColor;
-            transition: transform 0.3s ease;
           }
           
-          .github-badge:hover .github-icon {
-            transform: rotate(-15deg) scale(1.15);
-          }
-          
-          /* 响应式设计 */
           @media (max-width: 768px) {
             .container {
               margin: 20px;
-              padding: 20px;
+              padding: 25px;
             }
             
             h1 {
               font-size: 1.8em;
             }
             
+            .title-wrapper {
+              flex-direction: column;
+              align-items: flex-start;
+            }
+            
             .btn {
               width: 100%;
               text-align: center;
+              padding: 12px 30px;
             }
             
             .github-link {
-              top: 10px;
-              right: 10px;
+              top: 15px;
+              right: 15px;
             }
             
             .github-badge {
-              padding: 10px 16px;
-              font-size: 0.85em;
+              padding: 10px 15px;
+              font-size: 0.8em;
             }
           }
         </style>
@@ -371,42 +322,49 @@ async function handler(req: Request): Promise<Response> {
             <svg class="github-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path fill="currentColor" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v 3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
             </svg>
-            View on GitHub
+            GitHub
           </a>
         </div>
         <div class="container">
           <a href="https://github.com/Islatri/deno_osynic_oauth" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">
-            <h1>⚡ Osynic osu! OAuth Server</h1>
+            <div class="title-wrapper">
+              <div class="logo-circle">♪</div>
+              <h1>Osynic osu!</h1>
+            </div>
           </a>
-          <div class="subtitle">高性能 OAuth 认证服务 | 现代化架构</div>
-          <p>这是一个用于处理 osu! API OAuth 认证的服务端。采用最新的安全标准和现代化设计。</p>
-          <p>Github 仓库：<a href="https://github.com/Islatri/deno_osynic_oauth" target="_blank" rel="noopener noreferrer">https://github.com/Islatri/deno_osynic_oauth</a></p>
+          <div class="subtitle">🎵 OAuth 认证服务 | 节奏感设计</div>
+          <p>为 osu! 游戏生态提供专业、安全的 OAuth 2.0 认证服务端。采用现代微服务架构，支持 CORS、环境变量配置，自动化 token 管理。</p>
+          <p>Git 仓库：<a href="https://github.com/Islatri/deno_osynic_oauth" target="_blank" rel="noopener noreferrer">github.com/Islatri/deno_osynic_oauth</a></p>
           
-          <div class="info">
-            <h3>📋 系统配置</h3>
+          <div class="config-box">
+            <h3>⚙️ 系统配置</h3>
             <p><strong>Client ID:</strong> <code>${config.clientId}</code></p>
             <p><strong>回调地址:</strong> <code>${config.redirectUri}</code></p>
             <p><strong>应用地址:</strong> <code>${config.webappUrl}</code></p>
           </div>
 
-          <h3>🚀 快速开始</h3>
+          <h3>🎮 快速开始</h3>
           <ol>
-            <li>点击下方按钮启动 OAuth 认证流程</li>
-            <li>在 osu! 官方网站登录并授权应用</li>
-            <li>系统自动交换 token 并返回应用</li>
+            <li><strong>启动认证</strong> - 点击下方按钮开始 OAuth 认证流程</li>
+            <li><strong>授权确认</strong> - 在 osu! 官方网站登录并授权应用请求权限</li>
+            <li><strong>自动返回</strong> - 系统自动交换 token 并导向你的应用</li>
           </ol>
 
-          <button class="btn" onclick="window.location.href='/auth'">启动 OAuth 认证</button>
+          <button class="btn" onclick="window.location.href='/auth'">♪ 启动认证流程 ♪</button>
 
           <h3>🔌 API 端点</h3>
-          <div class="endpoint-list">
+          <div class="endpoint-box">
             <div class="endpoint-item">
-              <code>/auth</code>
-              <span>- 启动 OAuth 授权流程，重定向到 osu! 认证页面</span>
+              <code>GET /</code>
+              <span>- 欢迎页面，当前此页面</span>
             </div>
             <div class="endpoint-item">
-              <code>/callback</code>
-              <span>- OAuth 回调端点，处理授权码交换</span>
+              <code>GET /auth</code>
+              <span>- 启动认证，重定向至 osu! 授权页</span>
+            </div>
+            <div class="endpoint-item">
+              <code>GET /callback</code>
+              <span>- 回调处理，自动获取 token 并重定向</span>
             </div>
           </div>
         </div>
@@ -439,24 +397,23 @@ async function handler(req: Request): Promise<Response> {
     const state = url.searchParams.get("state");
     const error = url.searchParams.get("error");
 
-    console.log(`📨 Callback received - Code: ${code ? "✓" : "✗"}, State: ${state}`);
+    console.log(
+      `📨 Callback received - Code: ${code ? "✓" : "✗"}, State: ${state}`,
+    );
 
     // 检查是否有错误
     if (error) {
       console.error(`❌ OAuth error: ${error}`);
-      return new Response(
-        `OAuth 认证失败: ${error}`,
-        { status: 400, headers: corsHeaders }
-      );
+      return new Response(`OAuth 认证失败: ${error}`, {
+        status: 400,
+        headers: corsHeaders,
+      });
     }
 
     // 检查是否有 code
     if (!code) {
       console.error("❌ No code received");
-      return new Response(
-        "缺少授权码",
-        { status: 400, headers: corsHeaders }
-      );
+      return new Response("缺少授权码", { status: 400, headers: corsHeaders });
     }
 
     try {
@@ -465,7 +422,7 @@ async function handler(req: Request): Promise<Response> {
       console.log(`📋 Client ID: ${config.clientId}`);
       console.log(`📋 Redirect URI: ${config.redirectUri}`);
       console.log(`📋 Code length: ${code.length}`);
-      
+
       const requestBody = new URLSearchParams({
         client_id: config.clientId,
         client_secret: config.clientSecret,
@@ -473,13 +430,13 @@ async function handler(req: Request): Promise<Response> {
         grant_type: "authorization_code",
         redirect_uri: config.redirectUri,
       });
-      
+
       console.log("📤 Request body:", requestBody.toString());
-      
+
       const tokenResponse = await fetch("https://osu.ppy.sh/oauth/token", {
         method: "POST",
         headers: {
-          "Accept": "application/json",
+          Accept: "application/json",
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: requestBody,
@@ -512,134 +469,56 @@ async function handler(req: Request): Promise<Response> {
             }
             
             body {
-              font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
-              background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #0f1e3d 100%);
-              background-attachment: fixed;
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+              background: #1a1a2e;
               display: flex;
               justify-content: center;
               align-items: center;
               min-height: 100vh;
-              color: #e0e6ff;
-              position: relative;
-              overflow: hidden;
-            }
-            
-            /* 背景网格 */
-            body::before {
-              content: '';
-              position: fixed;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              background-image: 
-                linear-gradient(0deg, transparent 24%, rgba(0, 255, 200, 0.05) 25%, rgba(0, 255, 200, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 200, 0.05) 75%, rgba(0, 255, 200, 0.05) 76%, transparent 77%, transparent),
-                linear-gradient(90deg, transparent 24%, rgba(0, 255, 200, 0.05) 25%, rgba(0, 255, 200, 0.05) 26%, transparent 27%, transparent 74%, rgba(0, 255, 200, 0.05) 75%, rgba(0, 255, 200, 0.05) 76%, transparent 77%, transparent);
-              background-size: 50px 50px;
-              pointer-events: none;
-              z-index: -2;
-            }
-            
-            /* 装饰光线 */
-            body::after {
-              content: '';
-              position: fixed;
-              top: -50%;
-              right: -20%;
-              width: 100%;
-              height: 200%;
-              background: radial-gradient(circle, rgba(0, 255, 200, 0.1) 0%, transparent 70%);
-              pointer-events: none;
-              z-index: -1;
-              animation: glow 3s ease-in-out infinite;
-            }
-            
-            @keyframes glow {
-              0%, 100% { opacity: 1; }
-              50% { opacity: 0.8; }
+              color: #f0f0f0;
             }
             
             .container {
               text-align: center;
-              background: rgba(15, 30, 61, 0.7);
-              padding: 60px 40px;
-              border: 1px solid rgba(0, 255, 200, 0.2);
-              box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), 
-                          0 0 30px rgba(0, 255, 200, 0.1),
-                          inset 0 1px 0 rgba(255, 255, 255, 0.1);
-              backdrop-filter: blur(10px);
-              max-width: 450px;
-              position: relative;
-              z-index: 1;
+              background: #16213e;
+              padding: 50px 40px;
+              border: 1px solid rgba(255, 105, 180, 0.4);
+              box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+              max-width: 400px;
+              width: 100%;
             }
             
             h1 {
-              font-size: 2em;
-              margin-bottom: 30px;
-              background: linear-gradient(135deg, #00ffc8 0%, #00a8ff 100%);
-              -webkit-background-clip: text;
-              -webkit-text-fill-color: transparent;
-              background-clip: text;
+              font-size: 1.8em;
+              margin-bottom: 25px;
+              color: #ff69b4;
               font-weight: 700;
-              letter-spacing: 1px;
+            }
+            
+            .success-icon {
+              font-size: 3em;
+              display: block;
+              margin-bottom: 20px;
+              color: #ff69b4;
+              animation: scaleIn 0.5s ease-out;
             }
             
             .spinner-container {
-              margin: 40px 0;
+              margin: 30px 0;
             }
             
             .spinner {
-              border: 3px solid rgba(0, 255, 200, 0.2);
-              border-top: 3px solid #00ffc8;
-              border-radius: 50%;
-              width: 60px;
-              height: 60px;
-              animation: spin 1.5s linear infinite;
+              border: 3px solid rgba(255, 105, 180, 0.2);
+              border-top: 3px solid #ff69b4;
+              width: 50px;
+              height: 50px;
+              animation: spin 1s linear infinite;
               margin: 0 auto;
-              box-shadow: 0 0 20px rgba(0, 255, 200, 0.3);
             }
             
             @keyframes spin {
               0% { transform: rotate(0deg); }
               100% { transform: rotate(360deg); }
-            }
-            
-            .status-text {
-              font-size: 1.1em;
-              color: #c0c6ff;
-              margin-top: 30px;
-              letter-spacing: 0.5px;
-            }
-            
-            .dots {
-              display: inline-block;
-              margin-left: 5px;
-            }
-            
-            .dot {
-              display: inline-block;
-              width: 4px;
-              height: 4px;
-              background: #00ffc8;
-              border-radius: 50%;
-              margin: 0 2px;
-              animation: pulse 1.4s infinite;
-            }
-            
-            .dot:nth-child(1) { animation-delay: 0s; }
-            .dot:nth-child(2) { animation-delay: 0.2s; }
-            .dot:nth-child(3) { animation-delay: 0.4s; }
-            
-            @keyframes pulse {
-              0%, 60%, 100% { opacity: 0.3; }
-              30% { opacity: 1; }
-            }
-            
-            .success-icon {
-              font-size: 3.5em;
-              margin-bottom: 20px;
-              display: block;
-              animation: scaleIn 0.6s ease-out;
             }
             
             @keyframes scaleIn {
@@ -651,6 +530,35 @@ async function handler(req: Request): Promise<Response> {
                 transform: scale(1);
                 opacity: 1;
               }
+            }
+            
+            .status-text {
+              font-size: 0.95em;
+              color: #d0d0d0;
+              margin-top: 25px;
+            }
+            
+            .dots {
+              display: inline-block;
+              margin-left: 5px;
+            }
+            
+            .dot {
+              display: inline-block;
+              width: 3px;
+              height: 3px;
+              background: #ff69b4;
+              margin: 0 2px;
+              animation: pulse 1.4s infinite;
+            }
+            
+            .dot:nth-child(1) { animation-delay: 0s; }
+            .dot:nth-child(2) { animation-delay: 0.2s; }
+            .dot:nth-child(3) { animation-delay: 0.4s; }
+            
+            @keyframes pulse {
+              0%, 60%, 100% { opacity: 0.3; }
+              30% { opacity: 1; }
             }
           </style>
         </head>
@@ -697,20 +605,19 @@ async function handler(req: Request): Promise<Response> {
       return new Response(html, {
         headers: { "Content-Type": "text/html; charset=utf-8", ...corsHeaders },
       });
-
     } catch (error) {
       console.error("❌ Error:", error);
       return new Response(
         `服务器错误: ${error instanceof Error ? error.message : "未知错误"}`,
-        { status: 500, headers: corsHeaders }
+        { status: 500, headers: corsHeaders },
       );
     }
   }
 
   // 404 - 未找到
-  return new Response("404 - Not Found", { 
-    status: 404, 
-    headers: corsHeaders 
+  return new Response("404 - Not Found", {
+    status: 404,
+    headers: corsHeaders,
   });
 }
 
