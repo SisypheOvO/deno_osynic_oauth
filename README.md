@@ -40,9 +40,12 @@ deno task start
 
 ## 部署
 
-1. [Deno Deploy](https://deno.com/deploy) 创建项目并连接 GitHub 仓库
-2. 设置环境变量（项目设置中）
-3. 更新 osu! OAuth 设置中的 Redirect URI 为部署地址
+这个项目也可以直接部署到 Vercel。
+
+1. 在 Vercel 中导入此仓库
+2. 设置环境变量：`OSU_CLIENT_ID`、`OSU_CLIENT_SECRET`、`REDIRECT_URI`、`WEBAPP_URL`
+3. 将 `REDIRECT_URI` 更新为你的 Vercel 域名下的 `/callback`
+4. 如果你仍然保留 Deno Deploy 版本，也可以继续使用现有 `main.ts`
 
 ## 流程
 

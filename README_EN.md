@@ -40,9 +40,12 @@ Visit `http://localhost:4000` to start the authentication flow.
 
 ## Deployment
 
-1. Create a project on [Deno Deploy](https://deno.com/deploy) and connect your GitHub repository
-2. Set environment variables (in project settings)
-3. Update Redirect URI in osu! OAuth settings to your deployment address
+This project can also be deployed directly on Vercel.
+
+1. Import this repository in Vercel
+2. Set the environment variables: `OSU_CLIENT_ID`, `OSU_CLIENT_SECRET`, `REDIRECT_URI`, `WEBAPP_URL`
+3. Update `REDIRECT_URI` to the `/callback` path on your Vercel domain
+4. If you still keep the Deno Deploy version, you can continue using the existing `main.ts`
 
 ## Flow
 
