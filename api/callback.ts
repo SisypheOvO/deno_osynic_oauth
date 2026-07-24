@@ -6,6 +6,13 @@ const config = {
   webappUrl: process.env.WEBAPP_URL || "http://localhost:3000",
 }
 
+type TokenResponse = {
+  access_token: string
+  refresh_token?: string
+  expires_in: number
+  token_type: string
+}
+
 function pageHtml(title: string, body: string) {
   return `
     <!DOCTYPE html>
@@ -87,7 +94,7 @@ export default async function handler(req: any, res: any) {
     return
   }
 
-  const tokenData = await tokenResponse.json()
+  const tokenData = (await tokenResponse.json()) as TokenResponse
   const fragment = new URLSearchParams({
     access_token: tokenData.access_token,
     refresh_token: tokenData.refresh_token || "",
