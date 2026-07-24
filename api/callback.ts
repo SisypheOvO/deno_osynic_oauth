@@ -39,83 +39,95 @@ function pageHtml(title: string, body: string) {
 }
 
 export default async function handler(req: any, res: any) {
-  const url = new URL(req.url, `https://${req.headers.host || "localhost"}`)
-  const code = url.searchParams.get("code")
-  const error = url.searchParams.get("error")
+  try {
+    const url = new URL(req.url, `https://${req.headers.host || "localhost"}`)
+    const code = url.searchParams.get("code")
+    const error = url.searchParams.get("error")
 
-  res.setHeader("Access-Control-Allow-Origin", "*")
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type")
+    res.setHeader("Access-Control-Allow-Origin", "*")
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type")
 
-  if (req.method === "OPTIONS") {
-    res.statusCode = 204
-    res.end()
-    return
-  }
+    if (req.method === "OPTIONS") {
+      res.statusCode = 204
+      res.end()
+      return
+    }
 
-  if (error) {
-    res.statusCode = 400
-    res.setHeader("Content-Type", "text/html; charset=utf-8")
-    res.end(pageHtml("OAuth 失败", `<h1>OAuth 认证失败</h1><p>${error}</p>`))
-    return
-  }
+    if (error) {
+      res.statusCode = 400
+      res.setHeader("Content-Type", "text/html; charset=utf-8")
+      res.end(pageHtml("OAuth 失败", `<h1>OAuth 认证失败</h1><p>${error}</p>`))
+      return
+    }
 
-  if (!code) {
-    res.statusCode = 400
-    res.setHeader("Content-Type", "text/plain; charset=utf-8")
-    res.end("缺少授权码")
-    return
-  }
+    if (!code) {
+      res.statusCode = 400
+      res.setHeader("Content-Type", "text/plain; charset=utf-8")
+      res.end("缺少授权码")
+      return
+    }
 
-  const requestBody = new URLSearchParams({
-    client_id: config.clientId,
-    client_secret: config.clientSecret,
-    code,
-    grant_type: "authorization_code",
-    redirect_uri: config.redirectUri,
-  })
+    const requestBody = new URLSearchParams({
+      client_id: config.clientId,
+      client_secret: config.clientSecret,
+      code,
+      grant_type: "authorization_code",
+      redirect_uri: config.redirectUri,
+    })
 
-  const tokenResponse = await fetch("https://osu.ppy.sh/oauth/token", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: requestBody,
-  })
+    const tokenResponse = await fetch("https://osu.ppy.sh/oauth/token", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: requestBody,
+    })
 
-  if (!tokenResponse.ok) {
-    const errorText = await tokenResponse.text()
-    res.statusCode = 400
+    if (!tokenResponse.ok) {
+      const errorText = await tokenResponse.text()
+      res.statusCode = 400
+      res.setHeader("Content-Type", "text/html; charset=utf-8")
+      res.end(
+        pageHtml("OAuth 失败", `<h1>Token 交换失败</h1><p>${errorText}</p>`),
+      )
+      return
+    }
+
+    const tokenData = (await tokenResponse.json()) as TokenResponse
+    const fragment = new URLSearchParams({
+      access_token: tokenData.access_token,
+      refresh_token: tokenData.refresh_token || "",
+      expires_in: String(tokenData.expires_in),
+      token_type: tokenData.token_type,
+    }).toString()
+
+    const redirectUrl = `${config.webappUrl}#${fragment}`
+    res.statusCode = 200
     res.setHeader("Content-Type", "text/html; charset=utf-8")
     res.end(
-      pageHtml("OAuth 失败", `<h1>Token 交换失败</h1><p>${errorText}</p>`),
+      pageHtml(
+        "OAuth 成功",
+        `
+          <h1>OAuth 成功</h1>
+          <p>正在返回到你的应用。</p>
+          <script>
+            const redirectUrl = ${JSON.stringify(redirectUrl)}
+            setTimeout(() => { window.location.href = redirectUrl }, 100)
+          </script>
+        `,
+      ),
     )
-    return
+  } catch (error) {
+    console.error("OAuth callback failed:", error)
+    res.statusCode = 500
+    res.setHeader("Content-Type", "text/html; charset=utf-8")
+    res.end(
+      pageHtml(
+        "OAuth 失败",
+        `<h1>回调处理失败</h1><p>${error instanceof Error ? error.message : String(error)}</p>`,
+      ),
+    )
   }
-
-  const tokenData = (await tokenResponse.json()) as TokenResponse
-  const fragment = new URLSearchParams({
-    access_token: tokenData.access_token,
-    refresh_token: tokenData.refresh_token || "",
-    expires_in: String(tokenData.expires_in),
-    token_type: tokenData.token_type,
-  }).toString()
-
-  const redirectUrl = `${config.webappUrl}#${fragment}`
-  res.statusCode = 200
-  res.setHeader("Content-Type", "text/html; charset=utf-8")
-  res.end(
-    pageHtml(
-      "OAuth 成功",
-      `
-        <h1>OAuth 成功</h1>
-        <p>正在返回到你的应用。</p>
-        <script>
-          const redirectUrl = ${JSON.stringify(redirectUrl)}
-          setTimeout(() => { window.location.href = redirectUrl }, 100)
-        </script>
-      `,
-    ),
-  )
 }
