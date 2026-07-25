@@ -1,7 +1,7 @@
 const clientId = process.env.OSU_CLIENT_ID || "1"
 const redirectUri = process.env.REDIRECT_URI || "http://localhost:4000/callback"
 
-export default function handler(req: any, res: any) {
+function handler(req: any, res: any) {
   const state = crypto.randomUUID()
   const authUrl = new URL("https://osu.ppy.sh/oauth/authorize")
   authUrl.searchParams.set("client_id", clientId)
@@ -14,3 +14,5 @@ export default function handler(req: any, res: any) {
   res.setHeader("Location", authUrl.toString())
   res.end()
 }
+
+module.exports = handler

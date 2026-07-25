@@ -38,7 +38,7 @@ function pageHtml(title: string, body: string) {
   `
 }
 
-export default async function handler(req: any, res: any) {
+async function handler(req: any, res: any) {
   try {
     const url = new URL(req.url, `https://${req.headers.host || "localhost"}`)
     const code = url.searchParams.get("code")
@@ -131,3 +131,5 @@ export default async function handler(req: any, res: any) {
     )
   }
 }
+
+module.exports = handler
