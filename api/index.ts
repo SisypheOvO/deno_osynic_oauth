@@ -24,7 +24,7 @@ function pageHtml(title: string, body: string) {
   `
 }
 
-function handler(req: any, res: any) {
+export default function handler(req: any, res: any) {
   const webappUrl = process.env.WEBAPP_URL || "http://localhost:3000"
 
   res.statusCode = 200
@@ -41,5 +41,3 @@ function handler(req: any, res: any) {
     ),
   )
 }
-
-module.exports = handler
